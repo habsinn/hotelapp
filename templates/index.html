@@ -15,7 +15,7 @@ dans la liste déroulante ci-dessous, afin de lancer votre réservation dans une
 	  <label for="emails">Choisir votre email:</label>
 	  <select id="email" name="mail">
         {% for element in listemail %}
-        <option value="{{element[0]}}">element[0] element[1]</option>
+        <option value="{{element[0]}}">{{element[0]}} {{element[1]}}</option>
         {% endfor %}
 	  </select>
 	  <input type="submit">
