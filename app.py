@@ -1,4 +1,4 @@
-from flask import * 
+from flask import * # render_template
 import sys
 import time
 from datetime import datetime
@@ -28,6 +28,7 @@ def hello_world():
 def accueil():
     return render_template("index.html")
 
+#on veut maintenant lier accueil 
 
 #route pour la page de choix de dates
 @app.route('/dates-de-reservation')
