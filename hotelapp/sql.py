@@ -11,16 +11,16 @@ import psycopg2.extras
 #NE PAS MODIFIER LA LIGNE SUIVANTE
 """
 """
-#######################
-# CONNEXION BDD
-#######################
+
+# Connexion à la Base De Données PostGres du Cremi
+
 
 def pgsql_connect():
     try:
-        db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=fpizzacoca user=fpizzacoca")
+        db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=hbelaribi user=hbelaribi")
         return db
     except Exception as e :
-        erreur_pgsql("Désolé, connexion impossible actuellement.", e)
+        erreur_pgsql("La connexion ne fonctionne pas...Retentez un peu plus tard svp.", e)
 
 
 def pgsql_init_db():
@@ -46,9 +46,10 @@ def pgsql_init_db():
     except Exception as e :
         erreur_pgsql("Le renouvellement de la BDD a rencontré un problème.", e)
 
-#######################
-# REQUETES BDD
-#######################
+
+
+# Faire des requêtes auprès de la Base de Données
+
 def pgsql_select(command, param):
     db = pgsql_connect()
     # pour récupérer les attributs des relations
@@ -84,9 +85,9 @@ def pgsql_update(command, param):
         erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
 
-####################### 
-# MODIFS BASE SQL
-#######################
+
+# Modifier la Base de Données
+
 
 def pgsql_insert(command, param):
     db = pgsql_connect()
