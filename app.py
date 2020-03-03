@@ -41,6 +41,8 @@ def dates_de_reservation():
 #route pour la page de réservation de chambre
 @app.route('/reservezvotrechambre', methods=['GET','POST'])
 def reservez_votre_chambre():
+    session['arrivee'] = request.form['arrivee'] 
+    session['depart'] = request.form['depart'] 
     return render_template("reservez-votre-chambre.html")
 
 #route pour la page de confirmation de réservation
