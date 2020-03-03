@@ -1,21 +1,30 @@
-from flask import Flask
+from flask import * 
+import sys
+import time
+from datetime import datetime
+from datetime import date
+import psycopg2
+import psycopg2.extras
+
+
 #from sql import *
 
 app = Flask(__name__)
+app.secret_key = 'some_secret'
 
 # Config options - Make sure you created a 'config.py' file.
 app.config.from_object('config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
 #route test
-@app.route('/')
+@app.route('/hello')
 def hello_world():
     return 'Hello, World!'
 
 
 
 #route pour la page d'accueil
-@app.route('/accueil')
+@app.route('/')
 def accueil():
     return render_template("index.html")
 
