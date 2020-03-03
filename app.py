@@ -76,6 +76,9 @@ def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein
     except Exception as e :
         erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
+def erreur_pgsql(mess, e):
+        return redirect(url_for('accueil', errors=str(mess)))
+
 def listemails():
     return pgsql_select('SELECT mail, nom FROM hotel2019.client ORDER BY mail ;', [])
 
