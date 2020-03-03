@@ -1,6 +1,4 @@
 from flask import Flask
-from sql import *
-
 app = Flask(__name__)
 
 # Config options - Make sure you created a 'config.py' file.
