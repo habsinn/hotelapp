@@ -28,20 +28,20 @@ def hello_world():
 def accueil():
     return render_template("index.html")
 
-#on veut maintenant lier accueil 
+#on veut maintenant lier la page accueil à la page datesdereservation
 
 #route pour la page de choix de dates
-@app.route('/dates-de-reservation', methods=['POST'])
+@app.route('/datesdereservation', methods=['GET','POST'])
 def dates_de_reservation():
     return render_template("dates-de-reservation.html")
 
 #route pour la page de réservation de chambre
-@app.route('/reservez-votre-chambre', methods=['POST'])
+@app.route('/reservezvotrechambre', methods=['POST'])
 def reservez_votre_chambre():
     return render_template("reservez-votre-chambre.html")
 
 #route pour la page de confirmation de réservation
-@app.route('/reservation-enregistree', methods=['POST'])
+@app.route('/reservationenregistree', methods=['POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
