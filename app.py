@@ -24,7 +24,7 @@ def hello_world():
 
 ###########################################
 #route pour la page d'accueil
-@app.route('/', methods=['POST']) #attends-toi à être sollicité par la méthode POST
+@app.route('/', methods=['GET','POST']) #attends-toi à être sollicité par la méthode POST ou GET
 def accueil():
     return render_template("index.html")
 
@@ -36,12 +36,12 @@ def dates_de_reservation():
     return render_template("dates-de-reservation.html")
 
 #route pour la page de réservation de chambre
-@app.route('/reservezvotrechambre', methods=['POST'])
+@app.route('/reservezvotrechambre', methods=['GET','POST'])
 def reservez_votre_chambre():
     return render_template("reservez-votre-chambre.html")
 
 #route pour la page de confirmation de réservation
-@app.route('/reservationenregistree', methods=['POST'])
+@app.route('/reservationenregistree', methods=['GET', 'POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
