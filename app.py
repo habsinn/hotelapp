@@ -22,9 +22,9 @@ def hello_world():
     return 'Hello, World!'
 
 
-
+###########################################
 #route pour la page d'accueil
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST']) #attends-toi à être sollicité par la méthode POST
 def accueil():
     return render_template("index.html")
 
@@ -45,6 +45,10 @@ def reservez_votre_chambre():
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
+
+###########################################
+#COnfiguration de l'accès à la base de données postgreSQL sur le serveur dédié au Cremi de l'Université de Bordeaux
+
 def pgsql_connect():
     try:
         db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=fpizzacoca user=fpizzacoca")
@@ -52,7 +56,7 @@ def pgsql_connect():
     except Exception as e :
         erreur_pgsql("Désolé, connexion impossible actuellement.", e)
 
-def pgsql_select(command, param):
+def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein de la BDD en question
     db = pgsql_connect()
     # pour récupérer les attributs des relations
     # cursor = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
