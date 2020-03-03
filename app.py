@@ -56,7 +56,7 @@ def reservation_enregistree():
 
 def pgsql_connect():
     try:
-        db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=fpizzacoca user=fpizzacoca")
+        db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=hbelaribi user=hbelaribi")
         return db
     except Exception as e :
         erreur_pgsql("Désolé, connexion impossible actuellement.", e)
