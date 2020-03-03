@@ -33,7 +33,8 @@ def accueil():
 #route pour la page de choix de dates
 @app.route('/datesdereservation', methods=['GET','POST'])
 def dates_de_reservation():
-    return render_template("dates-de-reservation.html")
+    session['email']=request.form['email'] #la fonction request.form va chercher le champ qui a pour nom name='email'dans le fichiet index.html 
+    return render_template("dates-de-reservation.html",session=session) #session=session permet de transmettre la variable sesison d'une page à l'autre d'une session utilisateur donnée
 
 #route pour la page de réservation de chambre
 @app.route('/reservezvotrechambre', methods=['GET','POST'])
