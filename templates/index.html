@@ -9,8 +9,9 @@
 	<h2>Bienvenue à notre hôtel OTELLO!</h2>
 	<p>Veuillez s'il vous plaît choisir votre adresse email 
 dans la liste déroulante ci-dessous, afin de lancer votre réservation dans une de nos chambres.</p>
+ 
  <!---Liste déroulante des emails utilisateurs déjà existants dans la BDD --->
-	<form action="/action_page.php">
+	<form action="{{url_for('dates_de_reservation')}}">  <!---syntaxe Flask  --->
 	  <label for="emails">Choisir votre email:</label>
 	  <select id="email" name="email">
 	    <option value="email1">email1</option>
