@@ -24,27 +24,48 @@ def hello_world():
 
 
 #route pour la page d'accueil
-@app.route('/')
+@app.route('/', methods=['POST'])
 def accueil():
     return render_template("index.html")
 
 #on veut maintenant lier accueil 
 
 #route pour la page de choix de dates
-@app.route('/dates-de-reservation')
+@app.route('/dates-de-reservation', methods=['POST'])
 def dates_de_reservation():
     return render_template("dates-de-reservation.html")
 
 #route pour la page de réservation de chambre
-@app.route('/reservez-votre-chambre')
+@app.route('/reservez-votre-chambre', methods=['POST'])
 def reservez_votre_chambre():
     return render_template("reservez-votre-chambre.html")
 
 #route pour la page de confirmation de réservation
-@app.route('/reservation-enregistree')
+@app.route('/reservation-enregistree', methods=['POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
+def pgsql_connect():
+    try:
+        db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=fpizzacoca user=fpizzacoca")
+        return db
+    except Exception as e :
+        erreur_pgsql("Désolé, connexion impossible actuellement.", e)
+
+def pgsql_select(command, param):
+    db = pgsql_connect()
+    # pour récupérer les attributs des relations
+    # cursor = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor = db.cursor()
+    try:
+        cursor.execute(command, param)
+        rows = cursor.fetchall()
+        # close communication
+        cursor.close()
+        db.close()
+        return rows
+    except Exception as e :
+        erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
 
 
