@@ -31,9 +31,9 @@ def accueil():
 #on veut maintenant lier accueil 
 
 #route pour la page de choix de dates
-@app.route('/dates-de-reservation', methods=['POST'])
+@app.route('/dates_de_reservation', methods=['POST'])
 def dates_de_reservation():
-    return render_template("dates-de-reservation.html")
+    return render_template("dates_de_reservation.html")
 
 #route pour la page de réservation de chambre
 @app.route('/reservez-votre-chambre', methods=['POST'])
