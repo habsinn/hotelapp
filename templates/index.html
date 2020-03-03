@@ -13,10 +13,10 @@ dans la liste déroulante ci-dessous, afin de lancer votre réservation dans une
  <!---Liste déroulante des emails utilisateurs déjà existants dans la BDD --->
 	<form action="{{url_for('dates_de_reservation')}}" method="POST">  <!---syntaxe Flask  --->
 	  <label for="emails">Choisir votre email:</label>
-	  <select id="email" name="email">
-	    <option value="email1">email1</option>
-	    <option value="email2">email2</option>
-	    <option value="email3">email3</option>
+	  <select id="email" name="mail">
+        {% for element in listemail %}
+        <option value="{{element[0]}}">element[0] element[1]</option>
+        {% endfor %}
 	  </select>
 	  <input type="submit">
 	</form>

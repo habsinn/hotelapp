@@ -26,14 +26,16 @@ def hello_world():
 #route pour la page d'accueil
 @app.route('/', methods=['GET','POST']) #attends-toi à être sollicité par la méthode POST ou GET
 def accueil():
-    return render_template("index.html")
+    listemail = listemails()
+    return render_template("index.html", listemail=listemail)
 
 #on veut maintenant lier la page accueil à la page datesdereservation
 
 #route pour la page de choix de dates
 @app.route('/datesdereservation', methods=['GET','POST'])
 def dates_de_reservation():
-    session['email']=request.form['email'] #la fonction request.form va chercher le champ qui a pour nom name='email'dans le fichiet index.html 
+    session['mail'] = request.form['mail'] #la fonction request.form va chercher le champ qui a pour nom name='email'dans le fichiet index.html 
+    session['prenom'] = nomclient(session['mail'])
     return render_template("dates-de-reservation.html",session=session) #session=session permet de transmettre la variable sesison d'une page à l'autre d'une session utilisateur donnée
 
 #route pour la page de réservation de chambre
@@ -72,7 +74,13 @@ def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein
     except Exception as e :
         erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
+def listemails():
+    return pgsql_select('SELECT mail, nom FROM hotel2019.client ORDER BY mail ;', [])
 
+def nomclient(mail):
+    return pgsql_select('SELECT prenom FROM hotel2019.client WHERE mail = (%s) ;', [mail])
 #ne pas toucher! lance l'application
 if __name__ == "__main__":
     app.run()
+
+
