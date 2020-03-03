@@ -72,7 +72,6 @@ def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein
         erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
 
-
 #ne pas toucher! lance l'application
 if __name__ == "__main__":
     app.run()
