@@ -46,7 +46,6 @@ def reservation_enregistree():
 
 
 
-
 #ne pas toucher! lance l'application
 if __name__ == "__main__":
     app.run()
