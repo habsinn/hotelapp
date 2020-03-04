@@ -7,12 +7,12 @@
 </head>
 
 <body class="background">
-	<h2 class="title">Bienvenue à notre hôtel OTELLO!</h2>
-	<p class= "center">Veuillez s'il vous plaît choisir votre adresse email 
+	<h2 class="intro">Bienvenue à notre hôtel OTELLO!</h2>
+	<p class= "intro">Veuillez s'il vous plaît choisir votre adresse email 
 dans la liste déroulante ci-dessous, afin de lancer votre réservation dans une de nos chambres.</p>
  <!---Liste déroulante des emails utilisateurs déjà existants dans la BDD --->
 	<form action="{{url_for('dates_de_reservation')}}" method="POST">  <!---syntaxe Flask  --->
-	  <label for="emails">Choisir votre email:</label>
+	  <label for="emails"> <font color="white">Choisir votre email:</font> </label>
 	  <select id="email" name="mail">
         {% if listemail %}
             {% for element in listemail %}
