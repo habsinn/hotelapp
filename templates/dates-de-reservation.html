@@ -3,17 +3,18 @@
 
 <head>
 	<title>Vos dates de réservation</title>
+	 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
-	<p>Cher {{session['prenom']}}, veuillez maintenant choisir vos dates de réservation souhaitées.</p>
+	<p class="center">Cher {{session['prenom']}}, veuillez maintenant choisir vos dates de réservation souhaitées.</p>
 
-	<form action="/action_page.php">
+	<form action="{{url_for('reservez_votre_chambre')}}" method="POST">
 	  <label for="arrivee">Date d'arrivée (après 16h en journée): <input type="date" id="arrivee" name="arrivee"></label><br>
 	  <br>
 	  <label for="depart">Date de départ (avant 12h en journée): <input type="date" id="depart" name="depart"></label><br>
 	  <br>
-	  <input type="submit" value="Valider vos dates">
+	  <input type="submit" value="Validez vos dates">
 	</form>
 	
 </body>

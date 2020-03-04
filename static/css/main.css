@@ -1,0 +1,17 @@
+.background {
+  background-image: url('/static/images/moulinjaune.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+.center {
+  text-align: center;
+  color: DarkBlue;
+}
+
+.title {
+  text-align: center;
+  color: DarkSlategrey;
+
+

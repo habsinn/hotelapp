@@ -9,7 +9,7 @@ import psycopg2.extras
 
 #from sql import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'some_secret'
 
 # Config options - Make sure you created a 'config.py' file.
@@ -106,14 +106,16 @@ def erreur_pgsql(mess, e):
 
 
 ################################################
-# Récupération les donnnées des tables de la BDD
+# Récupération des donnnées des tables de la BDD
 ################################################
 
-#Cette fonction récupère le mail des clients dans la table client
+#1. dans la table hotel2019.client (telle que définie dans le projet création de BDD postgreSQL)
+###########
+#Cette fonction récupère le mail des clients dans la table client (utilisée dans page index.html)
 def listemails():
     return pgsql_select('SELECT mail FROM hotel2019.client ORDER BY mail ;', []) #à la manière d'une requête SQL dans postgreSQL
 
-#Cette fonction récupère le prénom du client dans la table client
+#Cette fonction récupère le prénom du client dans la table client (utilisée dans dates-de-reservation.html)
 def prenom_du_client(mail):
     return pgsql_select('SELECT prenom FROM hotel2019.client WHERE mail = (%s) ;', [mail])
 
