@@ -34,9 +34,9 @@ def accueil():
 #route pour la page de choix de dates
 @app.route('/datesdereservation', methods=['GET','POST'])
 def dates_de_reservation():
-    session['mail'] = request.form['mail'] #la fonction request.form va chercher le champ qui a pour nom name='email'dans le fichiet index.html 
-    session['prenom'] = nomclient(session['mail'])
-    return render_template("dates-de-reservation.html",session=session) #session=session permet de transmettre la variable sesison d'une page à l'autre d'une session utilisateur donnée
+    session['mail'] = request.form['mail'] #la fonction request.form va chercher le champ qui a pour nom name='email' dans le fichier index.html 
+    session['prenom'] = prenom_du_client(session['mail']) #va chercher le prénom du client correspondant au mail choisi dans le formulaire/liste déroulante
+    return render_template("dates-de-reservation.html", session=session) #session=session permet de transmettre la variable session d'une page à l'autre pour une session utilisateur donnée
 
 #route pour la page de réservation de chambre
 @app.route('/reservezvotrechambre', methods=['GET','POST'])
@@ -45,15 +45,18 @@ def reservez_votre_chambre():
     session['depart'] = request.form['depart'] 
     return render_template("reservez-votre-chambre.html")
 
-#route pour la page de confirmation de réservation
+#route pour la page de confirmationde réservation
 @app.route('/reservationenregistree', methods=['GET', 'POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
 
-###########################################
-#COnfiguration de l'accès à la base de données postgreSQL sur le serveur dédié au Cremi de l'Université de Bordeaux
+##################################
+#Configuration de l'accès à la base de données postgreSQL sur le serveur dédié au Cremi de l'Université de Bordeaux
+#################################
 
+# 1. Connexion à la Base De Données PostGres du Cremi depuis l'app Flask:
+###################################################################
 def pgsql_connect():
     try:
         db = psycopg2.connect("host=dbserver.emi.u-bordeaux.fr dbname=hbelaribi user=hbelaribi")
@@ -61,7 +64,10 @@ def pgsql_connect():
     except Exception as e :
         erreur_pgsql("Désolé, connexion impossible actuellement.", e)
 
-def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein de la BDD en question
+
+# 2.Faire n'importe quelle requêtes auprès de la Base de Données depuis l'app Flask
+#############################################################################
+def pgsql_select(command, param):
     db = pgsql_connect()
     # pour récupérer les attributs des relations
     # cursor = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -76,16 +82,48 @@ def pgsql_select(command, param):  #possibilité de lancer des requêtes au sein
     except Exception as e :
         erreur_pgsql("Désolé, service indisponible actuellement.", e)
 
+
+# 3. Insérer de nouvelles entrées dans la Base de Données depuis l'app Flask
+######################################################################
+def pgsql_insert(command, param):
+    db = pgsql_connect()
+    cursor = db.cursor()
+    try:
+        cursor.execute(command, param)
+        rows = cursor.rowcount()
+        # close communication
+        cursor.close()
+        db.close()
+        db.commit()
+    except Exception as e :
+        erreur_pgsql("Désolé, service indisponible actuellement.", e)
+
+# 4. Gestion des erreurs depuis l'app Flask
+###########################################
 def erreur_pgsql(mess, e):
+        flash(str(e))
         return redirect(url_for('accueil', errors=str(mess)))
 
-def listemails():
-    return pgsql_select('SELECT mail, nom FROM hotel2019.client ORDER BY mail ;', [])
 
-def nomclient(mail):
+################################################
+# Récupération les donnnées des tables de la BDD
+################################################
+
+#Cette fonction récupère le mail des clients dans la table client
+def listemails():
+    return pgsql_select('SELECT mail FROM hotel2019.client ORDER BY mail ;', []) #à la manière d'une requête SQL dans postgreSQL
+
+#Cette fonction récupère le prénom du client dans la table client
+def prenom_du_client(mail):
     return pgsql_select('SELECT prenom FROM hotel2019.client WHERE mail = (%s) ;', [mail])
-#ne pas toucher! lance l'application
+
+
+
+###########################################################################
+###########################################################################
+#Ne surtout pas toucher cette ligne de code! Elle lance l'application Flask!
+###########################################################################
 if __name__ == "__main__":
     app.run()
-
+###########################################################################
 
