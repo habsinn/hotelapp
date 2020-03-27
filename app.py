@@ -43,19 +43,14 @@ def reservez_votre_chambre():
     session['chambre'] = request.form['chambre']
     session['arrivee'] = request.form['arrivee'] 
     session['depart'] = request.form['depart']
-    
     return render_template("reservez-votre-chambre.html", session=session, listechambre=listechambre)
 
 #route pour la page de confirmation de réservation
-@app.route('/reservationenregistree', methods=['GET', 'POST'])
+@app.route('/reservation-enregistree', methods=['GET', 'POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
-#MongoDB
-#route pour la page d'affichage des commentaires de chambre
-@app.route('/liste_des_commentaires_des_chambres', methods=['GET','POST'])
-def affichage_commentaires():
-	return render_template("liste_commentaires.html")
+
 ##################################
 #Configuration de l'accès à la base de données postgreSQL sur le serveur dédié au Cremi de l'Université de Bordeaux
 #################################
@@ -136,7 +131,7 @@ def listechambres():
 
 #se connecter à la BDD NoSQL Mongo
 def get_mg_db():
-	db MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017").
+	db MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017.hbelaribi")
 	return db
 
 def mgdb_drop_db():
@@ -144,10 +139,11 @@ def mgdb_drop_db():
 	mgdb.chambres.drop()
 	mgdb.comments.drop()
 
+#initialisation la toute premiere fois pour créer la base de donnes mongodb
 def mgdb_init_db():
 	mgdb=get_mg_db()
 	with app.open_resource('/json/hotel_chambres.json') as f:
-	mgdb.chambres.insert(json.loads(f.read().decode('utf8')))
+		mgdb.chambres.insert(json.loads(f.read().decode('utf8')))
 
 def mgdb_display_chambre(idChambre):
 	mgdb=get_mg_db()
@@ -158,14 +154,15 @@ def mgdb_display_chambre(idChambre):
 
 def mgdb_display_comments(idChambre):
 	mgdb=get_mg_db()
+	all_comments=mgdb.comments.find({"chambre_id":int(idChambre)})
 	if mgdb:
-		return mgdb.comments.find({"chambre_id":int(idChambre)})
+		return all_comments
 	else:
 		return None
 
 def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
 	mgdb=get_mg_db() #connection à la BDD Mongo
-	dictionary={
+	dictionary={ #création d'un dictionnaire de données pour la collection
 			"chambre_id": int(idChambre),
 			"client_nom": nom,
 			"client_prenom": prenom,
@@ -173,10 +170,17 @@ def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
 			"date_debut": debut,
 			"date_fin": fin,
 			"avis": avis
-		}#création d'un dictionnaire de données pour la collection
+		}
 	result=mgdb.comments.insert(dictionary)
 	return result
 
+############################################################
+#route pour la page d'affichage des commentaires des chambres
+@app.route('/liste-des-commentaires', methods=['GET','POST'])
+def liste_commentaires():
+	print(all_comments) #pour vérifier dans la console flask quelle est la forme du résultat renvoyé par la fonction .find()
+	mgdb_display_comments(idChambre)
+	return render_template("liste_commentaires.html", session=session)
 
 ###########################################################################
 ###########################################################################
