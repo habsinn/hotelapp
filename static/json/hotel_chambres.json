@@ -1,20 +1,24 @@
 [
-	{
-		"chambre_id": 213,
-		"client_nom": "belaribi",
-		"client_prenom": "habib",
-		"date": "20/01/2020",
-		"date_debut": "12/01/2020",
-		"date_fin": "14/01/2020",
-		"avis": "Pas top mais pas pas top non plus."
-	}
-	{
-		"chambre_id": 214,
-		"client_nom": "belaribi2",
-		"client_prenom": "habib2",
-		"date": "20/02/2020",
-		"date_debut": "12/02/2020",
-		"date_fin": "14/02/2020",
-		"avis": "Pas seulement tip, mais carrément tip top."
-	}
+    {
+        "chambre_id": 203,
+        "nom": "Bleue",
+        "étage": 3,
+        "vue": "Ocean",
+        "couchage": "Un grand lit",
+        "salle de bain": {
+            "douche": "Italienne",
+            "baignoire": "à bulles"
+        }
+    },
+    {
+        "chambre_id": 204,
+        "nom": "Verte",
+        "étage": 3,
+        "vue": "Ocean",
+        "couchage": "Un grand lit",
+        "salle de bain": {
+            "douche": "Italienne",
+            "baignoire": "à bulles"
+        }
+    }
 ]

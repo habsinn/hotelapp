@@ -10,24 +10,20 @@
 	 <table style="width:100%">
 	  <tr>
 	    <th>Numéro de chambre</th>
-	    <th>Nom du client</th>
-	    <th>Prénom du client</th>
-	    <th>Date du commentaire</th>
-	    <th>Date de début de séjour</th>
-	    <th>Date de fin de séjour</th>
-	    <th>Avis du client</th>
+	    <th>Nom</th>
+	    <th>Étage</th>
+	    <th>Vue </th>
+	    <th>Couchage</th>
+	    <th>Salle de bain</th>
 	  </tr>
 	  <tr>
-	  {% if comments %}
-		{%for element in comments %}
-		    <td>{{element[0]}}</td>
-		    <td>{{element[1]}}</td>
-		    <td>{{element[2]}}</td>
-		    <td>{{element[3]}}</td>
-		    <td>{{element[4]}}</td>
-		    <td>{{element[5]}}</td>
-		    <td>{{element[6]}}</td>
-		{% endfor %}
+	  {% if chambres %}
+		    <td>{{chambres.chambre_id}}</td>
+		    <td>{{chambres.nom}}</td>
+		    <td>{{chambres.étage}}</td>
+		    <td>{{chambres.vue}}</td>
+		    <td>{{chambres.couchage}}</td>
+		    <td> Douche:{{chambres["salle de bain"].douche}}, Baignoire:{{chambres["salle de bain"].baignoire]}}</td>
 	  {% endif %}
 	  </tr>    
 	</table> 

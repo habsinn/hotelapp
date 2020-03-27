@@ -7,24 +7,16 @@
 </head>
 
 <body>
-	<p class="center"> D'abord, afin d'avoir une idée de l'ambiance et du confort de chacune d'entre elles, 
-	nous vous invitons à consulter notre <a href="{{url_for('liste_commentaires')}}">  page de commentaires laissés par de précédents clients </a> </p>
-	
 	<p class="center"> Ensuite, sélectionnez la chambre que vous souhaitez réserver dans la liste déroulante ci-dessous.</p>
 	
-	<!--- Liste déroulante des chambres utilisateurs déjà existantes dans la BDD Postgres --->
-      	<form action="{{url_for('reservation_enregistree')}}" method="POST">
-		<label for="chambre">Choississez une chambre: </label><br>
-		<select id="chambres" name="chambre">
-		{% if listechambre %}
-			{% for element in listechambre %}
-			<option value="{{element[0]}}">{{element[0]}}</option>
-			{% endfor %}
-		{% endif %}
-		</select>
-		<input type="submit">
-	</form>
-	
+	<!--- Liste  des chambres utilisateurs déjà existantes dans la BDD Postgres --->
+      	<ul>
+	{% if listechambres %}
+		{% for chambre in listechambres %}
+			<li><a href="{{ url_for('chambre', id=chambre.num_chambre) }}">Chambre numéro : {{ chambre.num_chambre }}</a></li>
+		{% endfor %}
+	{% endif %}
+	</ul>
 </body>
 
 </html> 

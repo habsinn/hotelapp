@@ -17,8 +17,9 @@ app.config.from_object('config')
 
 #route test
 @app.route('/hello')
-def hello_world():
-    return mgdb_init_db()
+def hello():
+	mgdb_init_db()
+	return "BDD Mongo activée"
 
 
 ###########################################
@@ -130,7 +131,7 @@ def listechambres():
 
 #se connecter à la BDD NoSQL Mongo
 def get_mg_db():
-	db=MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017.hbelaribi")
+	db=MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017").hbelaribi
 	return db
 
 def mgdb_drop_db():
@@ -147,13 +148,13 @@ def mgdb_init_db():
 def mgdb_display_chambre(idChambre):
 	mgdb=get_mg_db()
 	if mgdb:
-		return mgdb.chambres.find({"chambre_id":int(idChambre)})
+		return mgdb.chambres.find_one({"chambre_id":int(idChambre)})
 	else:
 		return None
 
 def mgdb_display_comments(idChambre):
 	mgdb=get_mg_db()
-	commentaires=mgdb.comments.find_one({"chambre_id":int(idChambre)})
+	commentaires=mgdb.comments.find({"chambre_id":int(idChambre)})
 	if mgdb:
 		return commentaires
 	else:
@@ -174,11 +175,11 @@ def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
 	return result
 
 #############################################################
-#route pour la page d'affichage des commentaires des chambres
-@app.route('/commentaires', methods=['GET','POST'])
-def liste_commentaires():
-	comments=commentaires
-	return render_template("liste_commentaires.html", session=session, comments=comments)
+#route pour la page d'affichage des commentaires des chambre
+@app.route('/chambre/<int:id>', methods=['GET','POST'])
+def liste_des_chambres(id):
+	chambres=mgdb_display_chambres(id)
+	return render_template("liste_chambres.html", session=session, chambres=chambres)
 
 ###########################################################################
 ###########################################################################
