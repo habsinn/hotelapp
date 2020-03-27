@@ -6,7 +6,7 @@ from datetime import date
 import psycopg2
 import psycopg2.extras
 from pymongo import * #mongodb
-from sql import * #est-ce utile? à vérifier
+#from sql import * #est-ce utile? à vérifier
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'some_secret'
