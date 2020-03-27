@@ -39,10 +39,9 @@ def dates_de_reservation():
 #route pour la page de réservation de chambre
 @app.route('/reservezvotrechambre', methods=['GET','POST'])
 def reservez_votre_chambre():
-    listechambre=listechambres()
-    session['chambre'] = request.form['chambre']
     session['arrivee'] = request.form['arrivee'] 
     session['depart'] = request.form['depart']
+    listechambre=listechambres()
     return render_template("reservez-votre-chambre.html", session=session, listechambre=listechambre)
 
 #route pour la page de confirmation de réservation
@@ -121,7 +120,7 @@ def prenom_du_client(mail):
 
 #fonction pour afficher la liste des chambres
 def listechambres():
-    return pgsql_select('SELECT num_chambre FROM hotel2019.chambre ORDER BY tarif_chambre ;', []) #à la manière d'une requête SQL dans postgreSQL
+    return pgsql_select('SELECT num_chambre FROM hotel2019.chambre ORDER BY num_chambre ;', []) #à la manière d'une requête SQL dans postgreSQL
 
 ##############
 ##############
