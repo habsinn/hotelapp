@@ -9,7 +9,14 @@
 <body>
 	<p class="center"> Il reste {X} chambres disponibles dans notre hôtel pour la période que vous avez choisi. <br> 
 	Sélectionnez la chambre que vous souhaitez réserver dans la liste déroulante ci-dessous</p>
-
+      
+      <!---Liste des chambres utilisateurs déjà existantes dans la BDD Postgres --->
+	 <ol>
+	  <li>Coffee</li>
+	  <li>Tea</li>
+	  <li>Milk</li>
+	</ol> 
+	
       <!---Liste déroulante des chambres utilisateurs déjà existants dans la BDD --->
 	<form action="{{url_for('reservation_enregistree')}}" method="POST">
 	  <label for="chambres">Choisir votre chambre:</label>

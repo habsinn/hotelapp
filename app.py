@@ -1,13 +1,12 @@
-from flask import * # render_template
+from flask import * # includes the render_template method
 import sys
 import time
 from datetime import datetime
 from datetime import date
 import psycopg2
 import psycopg2.extras
-
-
-#from sql import *
+from pymongo import * #mongodb
+from sql import * #est-ce utile? à vérifier
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'some_secret'
@@ -19,14 +18,14 @@ app.config.from_object('config')
 #route test
 @app.route('/hello')
 def hello_world():
-    return 'Hello, World!'
+    return mgdb_init_db()
 
 
 ###########################################
 #route pour la page d'accueil
 @app.route('/', methods=['GET','POST']) #attends-toi à être sollicité par la méthode POST ou GET
 def accueil():
-    listemail = listemails()
+    listemail = listemails()  #fonction listemails() créée en bas du code source
     return render_template("index.html", listemail=listemail)
 
 #on veut maintenant lier la page accueil à la page datesdereservation
@@ -119,6 +118,54 @@ def listemails():
 def prenom_du_client(mail):
     return pgsql_select('SELECT prenom FROM hotel2019.client WHERE mail = (%s) ;', [mail])
 
+
+##############
+#MongoDB
+#############
+
+#se connecter à la BDD NoSQL Mongo
+def get_mg_db():
+	db MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017").
+	return db
+
+def mgdb_drop_db():
+	mgdb=get_mg_db()
+	mgdb.chambres.drop()
+	mgdb.comments.drop()
+
+def mgdb_init_db():
+	mgdb=get_mg_db()
+	with app.open_resource('/json/hotel_chambres.json') as f:
+	mgdb.chambres.insert(json.loads(f.read().decode('utf8')))
+
+def mgdb_display_chambre(idChambre):
+	mgdb=get_mg_db()
+	if mgdb:
+		return mgdb.comments.find({"chambre_id":int(idChambre)})
+	else:
+		return None
+
+def mgdb_display_comments(idChambre):
+	mgdb=get_mg_db()
+	if mgdb:
+		return mgdb.comments.find({"chambre_id":int(idChambre)})
+	else:
+		return None
+
+def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
+	mgdb=get_mg_db()
+	result=mgdb.comments.insert(
+		{
+			"chambre_id": int(idChambre),
+			"client_nom": nom,
+			"client_prenom": prenom,
+			"date": jour,
+			"date_debut": debut,
+			"date_fin": fin,
+			"avis": avis
+		}
+	)
+	return result
 
 
 ###########################################################################
