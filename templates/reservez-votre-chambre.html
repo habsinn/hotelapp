@@ -11,8 +11,8 @@
 	
 	<!--- Liste  des chambres utilisateurs déjà existantes dans la BDD Postgres --->
       	<ul>
-	{% if listechambres %}
-		{% for chambre in listechambres %}
+	{% if listechambre %}
+		{% for chambre in listechambre %}
 			<li><a href="{{ url_for('chambre', id=chambre.num_chambre) }}">Chambre numéro : {{ chambre.num_chambre }}</a></li>
 		{% endfor %}
 	{% endif %}
