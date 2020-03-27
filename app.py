@@ -25,31 +25,37 @@ def hello_world():
 #route pour la page d'accueil
 @app.route('/', methods=['GET','POST']) #attends-toi à être sollicité par la méthode POST ou GET
 def accueil():
-    listemail = listemails()  #fonction listemails() créée en bas du code source
+    listemail = listemails()  #fonction listemails() créée en bas du code source.Elle fait un SELECT mail sur la BDD posgres
     return render_template("index.html", listemail=listemail)
 
 #on veut maintenant lier la page accueil à la page datesdereservation
-
 #route pour la page de choix de dates
 @app.route('/datesdereservation', methods=['GET','POST'])
 def dates_de_reservation():
-    session['mail'] = request.form['mail'] #la fonction request.form va chercher le champ qui a pour nom name='email' dans le fichier index.html 
+    session['mail'] = request.form['mail'] #la fonction request.form va chercher le champ qui a pour nom name='mail' dans le fichier index.html 
     session['prenom'] = prenom_du_client(session['mail']) #va chercher le prénom du client correspondant au mail choisi dans le formulaire/liste déroulante
     return render_template("dates-de-reservation.html", session=session) #session=session permet de transmettre la variable session d'une page à l'autre pour une session utilisateur donnée
 
 #route pour la page de réservation de chambre
 @app.route('/reservezvotrechambre', methods=['GET','POST'])
 def reservez_votre_chambre():
+    listechambre=listechambres()
+    session['chambre'] = request.form['chambre']
     session['arrivee'] = request.form['arrivee'] 
-    session['depart'] = request.form['depart'] 
-    return render_template("reservez-votre-chambre.html")
+    session['depart'] = request.form['depart']
+    
+    return render_template("reservez-votre-chambre.html", session=session, listechambre=listechambre)
 
-#route pour la page de confirmationde réservation
+#route pour la page de confirmation de réservation
 @app.route('/reservationenregistree', methods=['GET', 'POST'])
 def reservation_enregistree():
     return render_template("reservation-enregistree.html")
 
-
+#MongoDB
+#route pour la page d'affichage des commentaires de chambre
+@app.route('/liste_des_commentaires_des_chambres', methods=['GET','POST'])
+def affichage_commentaires():
+	return render_template("liste_commentaires.html")
 ##################################
 #Configuration de l'accès à la base de données postgreSQL sur le serveur dédié au Cremi de l'Université de Bordeaux
 #################################
@@ -105,7 +111,7 @@ def erreur_pgsql(mess, e):
 
 
 ################################################
-# Récupération des donnnées des tables de la BDD
+# Récupération des donnnées des tables de la BDD posgres
 ################################################
 
 #1. dans la table hotel2019.client (telle que définie dans le projet création de BDD postgreSQL)
@@ -118,10 +124,15 @@ def listemails():
 def prenom_du_client(mail):
     return pgsql_select('SELECT prenom FROM hotel2019.client WHERE mail = (%s) ;', [mail])
 
+#fonction pour afficher la liste des chambres
+def listechambres():
+    return pgsql_select('SELECT num_chambre FROM hotel2019.chambre ORDER BY tarif_chambre ;', []) #à la manière d'une requête SQL dans postgreSQL
 
 ##############
+##############
 #MongoDB
-#############
+##############
+##############
 
 #se connecter à la BDD NoSQL Mongo
 def get_mg_db():
@@ -141,7 +152,7 @@ def mgdb_init_db():
 def mgdb_display_chambre(idChambre):
 	mgdb=get_mg_db()
 	if mgdb:
-		return mgdb.comments.find({"chambre_id":int(idChambre)})
+		return mgdb.chambres.find({"chambre_id":int(idChambre)})
 	else:
 		return None
 
@@ -153,9 +164,8 @@ def mgdb_display_comments(idChambre):
 		return None
 
 def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
-	mgdb=get_mg_db()
-	result=mgdb.comments.insert(
-		{
+	mgdb=get_mg_db() #connection à la BDD Mongo
+	dictionary={
 			"chambre_id": int(idChambre),
 			"client_nom": nom,
 			"client_prenom": prenom,
@@ -163,8 +173,8 @@ def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
 			"date_debut": debut,
 			"date_fin": fin,
 			"avis": avis
-		}
-	)
+		}#création d'un dictionnaire de données pour la collection
+	result=mgdb.comments.insert(dictionary)
 	return result
 
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Accueil de votre hôtel</title>
+	 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body >
+	{%if categorie == 'client' %} 
+	<h1>Vos commentaires {{session['prenom'] }}</h1> 
+		{% for rows in commentaires_client %} 
+			{{ rows }}<br>
+		{% endfor %}
+	{%endif%}
+	{%if categorie == 'chambre '%} 
+	<h1>Commentaires sur la chambre {{session['chambre'] }}
+	</h1> {% for row in commentaires_chambre %} {{ row[2] }}<br> 
+	{% endfor %} 
+	{%endif%} 
+	{% endblock %}
+</body>
+
+</html> 
