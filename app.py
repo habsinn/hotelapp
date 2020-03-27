@@ -153,9 +153,9 @@ def mgdb_display_chambre(idChambre):
 
 def mgdb_display_comments(idChambre):
 	mgdb=get_mg_db()
-	all_comments=mgdb.comments.find({"chambre_id":int(idChambre)})
+	commentaires=mgdb.comments.find_one({"chambre_id":int(idChambre)})
 	if mgdb:
-		return all_comments
+		return commentaires
 	else:
 		return None
 
@@ -173,13 +173,12 @@ def mgdb_insert_comment(idChambre, nom, prenom, jour, debut, fin, avis):
 	result=mgdb.comments.insert(dictionary)
 	return result
 
-############################################################
+#############################################################
 #route pour la page d'affichage des commentaires des chambres
-@app.route('/liste-des-commentaires', methods=['GET','POST'])
+@app.route('/commentaires', methods=['GET','POST'])
 def liste_commentaires():
-	print(all_comments) #pour vérifier dans la console flask quelle est la forme du résultat renvoyé par la fonction .find()
-	mgdb_display_comments(idChambre)
-	return render_template("liste_commentaires.html", session=session)
+	comments=commentaires
+	return render_template("liste_commentaires.html", session=session, comments=comments)
 
 ###########################################################################
 ###########################################################################

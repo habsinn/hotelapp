@@ -18,12 +18,19 @@
 	    <th>Avis du client</th>
 	  </tr>
 	  <tr>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
-	    <td></td>
+	  {% if comments %}
+		{%for element in comments %}
+		    <td>{{element[0]}}</td>
+		    <td>{{element[1]}}</td>
+		    <td>{{element[2]}}</td>
+		    <td>{{element[3]}}</td>
+		    <td>{{element[4]}}</td>
+		    <td>{{element[5]}}</td>
+		    <td>{{element[6]}}</td>
+		{% endfor %}
+	  {% endif %}
+	  </tr>    
 	</table> 
+	
+	<p class="center"> Une fois votre choix effectué, allez sélectionner la chambre que vous souhaitez réserver <a href="{{url_for('reservez_votre_chambre')}}">  sur la page de réservation en cliquant ici.</a> </p>
 </body>
