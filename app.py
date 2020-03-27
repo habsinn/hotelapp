@@ -131,7 +131,7 @@ def listechambres():
 
 #se connecter à la BDD NoSQL Mongo
 def get_mg_db():
-	db MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017.hbelaribi")
+	db=MongoClient("mongodb://mongodb.emi.u-bordeaux.fr:27017.hbelaribi")
 	return db
 
 def mgdb_drop_db():
